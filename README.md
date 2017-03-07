@@ -6,7 +6,7 @@ This module is compatible with both webpack 2.0 and 1.0. Example config file is 
 
 #### Usage with QOR
 ##### main.go
-```
+```golang
 import (
   ...
 	webpack "gopkg.in/webpack.v0"
@@ -20,7 +20,7 @@ func main() {
 ```
 
 ##### controller.go
-```
+```golang
 package controllers
 
 import (
@@ -51,7 +51,7 @@ func HomeIndex(ctx *gin.Context) {
 
 ##### layouts/application.tmpl
 
-```
+```html
 <!doctype html>
 <html>
   <head>
@@ -72,7 +72,8 @@ func HomeIndex(ctx *gin.Context) {
 #### Usage with Iris
 
 ##### main.go
-```
+
+```golang
 import (
     webpack "gopkg.in/webpack.v0"
     iris "gopkg.in/kataras/iris.v6"
@@ -93,7 +94,7 @@ func main() {
 ```
 
 ##### templates/layout.html
-```
+```html
 <!DOCTYPE HTML>
 <html lang="en" >
 <head>
