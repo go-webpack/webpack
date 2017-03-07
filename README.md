@@ -4,7 +4,70 @@ This module allows proper integration with webpack, with support for asset hashe
 
 This module is compatible with both webpack 2.0 and 1.0. Example config file is for 2.0.
 
-#### Usage with 
+#### Usage with QOR
+##### main.go
+```
+import (
+  ...
+	webpack "gopkg.in/webpack.v0"
+)
+func main() {
+	is_dev := flag.Bool("dev", false, "development mode")
+	flag.Parse()
+	webpack.Init(*is_dev)
+  ...
+}
+```
+
+##### controller.go
+```
+package controllers
+
+import (
+	"github.com/qor/render"
+	"github.com/gin-gonic/gin"
+	webpack "gopkg.in/webpack.v0"
+)
+
+var Render *render.Render
+
+func init() {
+	Render = render.New()
+}
+
+func ViewHelpers() map[string]interface{} {
+	return map[string]interface{}{"asset": webpack.AssetHelper}
+}
+
+func HomeIndex(ctx *gin.Context) {
+	Render.Funcs(ViewHelpers()).Execute(
+		"home_index",
+		gin.H{},
+		ctx.Request,
+		ctx.Writer,
+	)
+}
+```
+
+##### layouts/application.tmpl
+
+```
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {{ asset "vendor.css" }}
+    {{ asset "application.css" }}
+  </head>
+  <body>
+    <div class="page-wrap">
+      {{render .Template}}
+    </div>
+    {{ asset "vendor.js" }}
+    {{ asset "application.js" }}
+  </body>
+</html>
+```
 
 #### Usage with Iris
 
