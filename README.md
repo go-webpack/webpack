@@ -120,7 +120,7 @@ Use webpack.config.js (and package.json) from this repo or create your own.
 
 The only thing that must be present in your webpack config is StatsPlugin which is required to serve assets the proper way with hashes, etc.
 
-Your assets is expected to be at public/webpack and your dev server at http://localhost:3808
+Your compiled assets is expected to be at public/webpack and your webpack-dev-server at http://localhost:3808
 
 When run with -dev flag, webpack asset manifest is loaded from http://localhost:3808/webpack/manifest.json, and updated automatically on every request. When running in production from public/webpack/manifest.json and is persistently cached in memory for performance reasons.
 
