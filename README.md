@@ -1,10 +1,17 @@
+#### Introduction
+
+This module allows proper integration with webpack, with support for asset hashes for production caching.
+
+This module is compatible with both webpack 2.0 and 1.0. Example config file is for 2.0.
+
+#### Usage with 
 
 #### Usage with Iris
 
 ##### main.go
 ```
 import (
-    "github.com/go-webpack/webpack"
+    webpack "gopkg.in/webpack.v0"
     iris "gopkg.in/kataras/iris.v6"
     "gopkg.in/kataras/iris.v6/adaptors/httprouter"
 )
@@ -12,10 +19,10 @@ import (
 func main() {
     is_dev := flag.Bool("dev", false, "development mode")
     flag.Parse()
-    wp.Init(*is_dev)
+    webpack.Init(*is_dev)
     view := view.HTML("./templates", ".html")
     view = view.Layout("layout.html")
-    view = view.Funcs(map[string]interface{}{"asset": wp.AssetHelper})
+    view = view.Funcs(map[string]interface{}{"asset": webpack.AssetHelper})
     app.Adapt(view.Reload(*is_dev))
 
     app.Adapt(httprouter.New())
@@ -29,16 +36,21 @@ func main() {
 <head>
 <meta charset="UTF-8">
 <title></title>
+{{ asset "vendor.css" }}
 {{ asset "application.css" }}
 </head>
 <body>
 {{ yield }}
+{{ asset "vendor.js" }}
 {{ asset "application.js" }}
 ```
 
-##### Usage with ... 
+#### Usage with other frameworks
 
-TODO
+- Configure webpack to serve manifest.json via StatsPlugin
+- Call ```webpack.Init()``` to set development or production mode.
+- Add webpack.AssetHelper to your template functions.
+- Call helper function with the name of your asset
 
 Use webpack.config.js (and package.json) from this repo or create your own.
 

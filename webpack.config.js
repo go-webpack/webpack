@@ -20,8 +20,6 @@ const extractSass = new ExtractTextPlugin({
     disable: !production
 });
 
-console.log("dir:", __dirname)
-
 var sassExtractor = () => {
   return extractSass.extract({
     use: [{
@@ -46,9 +44,6 @@ var config = {
     // Sources are expected to live in $app_root/webpack
     vendor: [
       'babel-polyfill',
-      'axios',
-      'jquery',
-      'lodash',
     ],
     application: 'application.es6'
   },
@@ -56,7 +51,6 @@ var config = {
   module: {
       rules: [
           { test: /\.es6/, use: "babel-loader" },
-          { test: /\.handlebars$/, use: "handlebars-loader" },
           { test: /\.(jpe?g|png|gif)$/i, use: "file-loader" },
           {
             test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/,
@@ -92,11 +86,6 @@ var config = {
       chunks: false,
       modules: false,
       assets: true
-    }),
-    new webpack.ProvidePlugin({
-      $: "jquery/dist/jquery",
-      jQuery: "jquery/dist/jquery",
-      "window.jQuery": "jquery/dist/jquery",
     })
   ]
 };
