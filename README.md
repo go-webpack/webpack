@@ -128,6 +128,7 @@ When run with -dev flag, webpack asset manifest is loaded from http://localhost:
 
 ```
 cd examples
+yarn install # or npm install
 ./node_modules/.bin/webpack-dev-server --config webpack.config.js --hot --inline
 go get
 go run iris.go -dev
@@ -145,3 +146,5 @@ NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js
 Copyright (c) 2017 glebtv
 
 MIT License
+
+
