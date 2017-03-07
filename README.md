@@ -124,6 +124,21 @@ Your assets is expected to be at public/webpack and your dev server at http://lo
 
 When run with -dev flag, webpack asset manifest is loaded from http://localhost:3808/webpack/manifest.json, and updated automatically on every request. When running in production from public/webpack/manifest.json and is persistently cached in memory for performance reasons.
 
+#### Running examples
+
+```
+cd examples
+./node_modules/.bin/webpack-dev-server --config webpack.config.js --hot --inline
+go get
+go run iris.go -dev
+go run qor.go -dev
+```
+
+#### Compiling assets for production
+
+```
+NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js
+```
 
 #### License
 

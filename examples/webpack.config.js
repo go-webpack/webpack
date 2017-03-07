@@ -74,7 +74,7 @@ var config = {
   },
 
   resolve: {
-    modules: [path.resolve(__dirname, "..", "webpack"), path.resolve(__dirname, "..", "node_modules")],
+    modules: [path.resolve(__dirname, "webpack"), path.resolve(__dirname, "node_modules")],
     extensions: [".js", ".es6", ".css", ".sass", ".scss"],
   },
 
