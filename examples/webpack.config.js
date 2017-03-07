@@ -23,17 +23,9 @@ const extractSass = new ExtractTextPlugin({
 var sassExtractor = () => {
   return extractSass.extract({
     use: [{
-      loader: "style-loader"
+      loader: "css-loader"
     }, {
-      loader: "css-loader",
-      options: {
-        sourceMap: true
-      }
-    }, {
-      loader: "sass-loader",
-      options: {
-        sourceMap: true
-      }
+      loader: "sass-loader"
     }],
     fallback: "style-loader"
   })
