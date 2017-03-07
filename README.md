@@ -1,6 +1,6 @@
-#### Introduction
+## Introduction
 
-This module allows proper integration with webpack, with support for asset hashes for production caching.
+This module allows proper integration with webpack, with support for proper assets reloading in development and asset hashes for production caching.
 
 This module is compatible with both webpack 2.0 and 1.0. Example config file is for 2.0.
 
