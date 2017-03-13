@@ -4,6 +4,10 @@ This module allows proper integration with webpack, with support for proper asse
 
 This module is compatible with both webpack 2.0 and 1.0. Example config file is for 2.0.
 
+[![Go Report Card](https://goreportcard.com/badge/gopkg.in/webpack.v0)](https://goreportcard.com/report/gopkg.in/webpack.v0)
+
+[![GoDoc](https://godoc.org/gopkg.in/webpack.v0?status.svg)](https://godoc.org/gopkg.in/webpack.v0)
+
 #### Usage with QOR
 ##### main.go
 ```golang

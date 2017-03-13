@@ -30,7 +30,8 @@ var dev bool
 var assets map[string][]string
 var webpackBase string
 
-func Filter(vs []string, f func(string) bool) []string {
+// filter array of strings by function
+func filter(vs []string, f func(string) bool) []string {
 	vsf := make([]string, 0)
 	for _, v := range vs {
 		if f(v) {
@@ -41,10 +42,10 @@ func Filter(vs []string, f func(string) bool) []string {
 }
 
 func devManifest() (data []byte) {
-	manifestUrl := fmt.Sprint("http://", host, "/webpack/manifest.json")
-	statusCode, body, err := c.Get(nil, manifestUrl)
+	manifestURL := fmt.Sprint("http://", host, "/webpack/manifest.json")
+	statusCode, body, err := c.Get(nil, manifestURL)
 	if err != nil {
-		log.Fatalf("Error when loading manifest from %s: %s", manifestUrl, err)
+		log.Fatalf("Error when loading manifest from %s: %s", manifestURL, err)
 	}
 	if statusCode != fasthttp.StatusOK {
 		log.Fatalf("Unexpected status code: %d. Expecting %d", statusCode, fasthttp.StatusOK)
@@ -60,6 +61,7 @@ func prodManifest() (data []byte) {
 	return body
 }
 
+// Manifest Get webpack manifest according to current environment
 func Manifest() map[string][]string {
 	var data []byte
 	if dev {
@@ -77,25 +79,22 @@ func Manifest() map[string][]string {
 		var d []string
 		err = json.Unmarshal(*aval, &d)
 		if err != nil {
-			//log.Fatalf("Error when parsing manifest for %s: %s %s", akey, err, aval)
-			//continue
 			var sd string
 			err = json.Unmarshal(*aval, &sd)
 			if err != nil {
-				log.Fatalf("Error when parsing manifest for %s: %s %s", akey, err, aval)
+				log.Fatalf("Error when parsing manifest for %s: %s %s", akey, err, string(aval))
 				continue
 			}
 			d = []string{sd}
 		}
-		ast[akey] = Filter(d, func(v string) bool {
+		ast[akey] = filter(d, func(v string) bool {
 			return !strings.Contains(v, ".map")
 		})
-		//ast[akey] = d
 	}
-	//log.Println(ast)
 	return ast
 }
 
+// AssetHelper Template helper for asset
 func AssetHelper(key string) (template.HTML, error) {
 	var ast map[string][]string
 	if dev {
@@ -127,12 +126,14 @@ func AssetHelper(key string) (template.HTML, error) {
 	return template.HTML(strings.Join(buf, "\n")), err
 }
 
-func Init(is_dev bool) {
-	dev = is_dev
-	if dev {
+// Init Set current environment and preload manifest
+func Init(isDev bool) {
+	if isDev {
 		c = &fasthttp.HostClient{
 			Addr: host,
 		}
+
+		// Try to preload manifest, so we can show an error if webpack-dev-server is not running
 		Manifest()
 	} else {
 		assets = Manifest()
