@@ -13,8 +13,8 @@ import (
 	webpack "gopkg.in/webpack.v0"
 )
 
-func HomeIndex(ctx *gin.Context) {
-	Render.Funcs(ViewHelpers()).Execute(
+func homeIndex(ctx *gin.Context) {
+	renderer.Funcs(viewHelpers()).Execute(
 		"home_index",
 		gin.H{},
 		ctx.Request,
@@ -22,26 +22,26 @@ func HomeIndex(ctx *gin.Context) {
 	)
 }
 
-var Render *render.Render
+var renderer *render.Render
 
 func init() {
-	Render = render.New()
+	renderer = render.New()
 }
 
-func ViewHelpers() map[string]interface{} {
+func viewHelpers() map[string]interface{} {
 	return map[string]interface{}{"asset": webpack.AssetHelper}
 }
 
 func main() {
-	is_dev := flag.Bool("dev", false, "development mode")
+	isDev := flag.Bool("dev", false, "development mode")
 	flag.Parse()
-	webpack.Init(*is_dev)
+	webpack.Init(*isDev)
 
 	mux := http.NewServeMux()
 
 	router := gin.Default()
 	gin.SetMode(gin.DebugMode)
-	router.GET("/", HomeIndex)
+	router.GET("/", homeIndex)
 
 	for _, path := range []string{"webpack"} {
 		mux.Handle(fmt.Sprintf("/%s/", path), utils.FileServer(http.Dir("public")))

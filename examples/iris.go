@@ -10,22 +10,22 @@ import (
 	webpack "gopkg.in/webpack.v0"
 )
 
-func HomeIndex(ctx *iris.Context) {
+func homeIndex(ctx *iris.Context) {
 	ctx.MustRender("home.html", struct{}{})
 }
 
 func main() {
-	is_dev := flag.Bool("dev", false, "development mode")
+	isDev := flag.Bool("dev", false, "development mode")
 	flag.Parse()
-	webpack.Init(*is_dev)
+	webpack.Init(*isDev)
 	view := view.HTML("./templates", ".html")
 	view = view.Layout("layout.html")
 	view = view.Funcs(map[string]interface{}{"asset": webpack.AssetHelper})
 
 	app := iris.New()
-	app.Adapt(view.Reload(*is_dev))
+	app.Adapt(view.Reload(*isDev))
 	app.Adapt(httprouter.New())
-	app.Get("/", HomeIndex)
+	app.Get("/", homeIndex)
 
 	log.Println("Iris demo app listening on http://localhost:3200")
 	app.Listen(":3200")
