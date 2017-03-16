@@ -128,6 +128,7 @@ func AssetHelper(key string) (template.HTML, error) {
 
 // Init Set current environment and preload manifest
 func Init(isDev bool) {
+	dev = isDev
 	if isDev {
 		c = &fasthttp.HostClient{
 			Addr: host,
