@@ -13,7 +13,7 @@ This module is compatible with both webpack 2.0 and 1.0. Example config file is 
 ```golang
 import (
   ...
-	webpack "gopkg.in/webpack.v0"
+	"gopkg.in/webpack.v0"
 )
 func main() {
 	is_dev := flag.Bool("dev", false, "development mode")
@@ -30,7 +30,7 @@ package controllers
 import (
 	"github.com/qor/render"
 	"github.com/gin-gonic/gin"
-	webpack "gopkg.in/webpack.v0"
+	"gopkg.in/webpack.v0"
 )
 
 var Render *render.Render
@@ -79,7 +79,7 @@ func HomeIndex(ctx *gin.Context) {
 
 ```golang
 import (
-    webpack "gopkg.in/webpack.v0"
+    "gopkg.in/webpack.v0"
     iris "gopkg.in/kataras/iris.v6"
     "gopkg.in/kataras/iris.v6/adaptors/httprouter"
 )

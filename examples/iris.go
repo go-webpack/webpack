@@ -7,7 +7,7 @@ import (
 	iris "gopkg.in/kataras/iris.v6"
 	"gopkg.in/kataras/iris.v6/adaptors/httprouter"
 	"gopkg.in/kataras/iris.v6/adaptors/view"
-	webpack "gopkg.in/webpack.v0"
+	"gopkg.in/webpack.v0"
 )
 
 func homeIndex(ctx *iris.Context) {

@@ -10,7 +10,7 @@ import (
 	"github.com/qor/qor/utils"
 	"github.com/qor/render"
 	"github.com/qor/wildcard_router"
-	webpack "gopkg.in/webpack.v0"
+	"gopkg.in/webpack.v0"
 )
 
 func homeIndex(ctx *gin.Context) {
