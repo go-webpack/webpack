@@ -1,4 +1,4 @@
-package wp
+package webpack
 
 import (
 	"encoding/json"
@@ -82,7 +82,7 @@ func Manifest() map[string][]string {
 			var sd string
 			err = json.Unmarshal(*aval, &sd)
 			if err != nil {
-				log.Fatalf("Error when parsing manifest for %s: %s %s", akey, err, string(aval))
+				log.Fatalf("Error when parsing manifest for %s: %s %s", akey, err, string(*aval))
 				continue
 			}
 			d = []string{sd}
