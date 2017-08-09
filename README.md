@@ -7,8 +7,12 @@ This module allows proper integration with webpack, with support for proper asse
 
 This module is compatible with both webpack 2.0 and 1.0. Example config file is for 2.0.
 
+## Changelog
 
-#### Usage with QOR
+0.1 Initial version
+0.2 2017-08-09 Now reports if you didn't call webpack.Init() to set working mode properly
+
+#### Usage with QOR / Gin
 ##### main.go
 ```golang
 import (
@@ -23,7 +27,7 @@ func main() {
 }
 ```
 
-##### controller.go
+##### controller.go (qor)
 ```golang
 package controllers
 
@@ -51,6 +55,21 @@ func HomeIndex(ctx *gin.Context) {
 		ctx.Writer,
 	)
 }
+```
+
+##### alternate controller/route (gin / eztemplate)
+
+```golang
+import (
+	"github.com/gin-gonic/gin"
+	eztemplate "github.com/michelloworld/ez-gin-template"
+)
+r = gin.Default()
+render := eztemplate.New()
+render.TemplateFuncMap = template.FuncMap{
+  "asset": webpack.AssetHelper,
+}
+r.HTMLRender = render.Init()
 ```
 
 ##### layouts/application.tmpl

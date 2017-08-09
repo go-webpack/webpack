@@ -29,6 +29,11 @@ var c *fasthttp.HostClient
 var dev bool
 var assets map[string][]string
 var webpackBase string
+var initDone bool
+
+func init() {
+	initDone = false
+}
 
 // filter array of strings by function
 func filter(vs []string, f func(string) bool) []string {
@@ -96,6 +101,9 @@ func Manifest() map[string][]string {
 
 // AssetHelper Template helper for asset
 func AssetHelper(key string) (template.HTML, error) {
+	if !initDone {
+		return "", errors.New("Please call webpack.Init() first (see readme)")
+	}
 	var ast map[string][]string
 	if dev {
 		ast = Manifest()
@@ -109,6 +117,7 @@ func AssetHelper(key string) (template.HTML, error) {
 	var err error
 	v, ok := ast[dat[0]]
 	if !ok {
+		log.Printf("%+v", ast)
 		return "", errors.New(fmt.Sprint("asset file ", dat[0], " not found in manifest"))
 	}
 	for _, s := range v {
@@ -139,4 +148,5 @@ func Init(isDev bool) {
 	} else {
 		assets = Manifest()
 	}
+	initDone = true
 }
