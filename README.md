@@ -9,9 +9,9 @@ This module is compatible with both webpack 3.0, 2.0 and 1.0. Example config fil
 
 ## Changelog
 
-0.1 Initial version
-0.2 2017-08-09 Now reports if you didn't call webpack.Init() to set working mode properly
-0.3 2018-02-09 Refactor & cleanup code, add support for ManifestPlugin instead of outdated StatsPlugin (see new examples)
+- 0.3 2018-02-09 Refactor & cleanup code, add support for ManifestPlugin instead of outdated StatsPlugin (see new examples)
+- 0.2 2017-08-09 Now reports if you didn't call webpack.Init() to set working mode properly
+- 0.1 Initial version
 
 #### Usage with QOR / Gin
 ##### main.go
