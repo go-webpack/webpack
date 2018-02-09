@@ -17,7 +17,6 @@ func homeIndex(ctx *iris.Context) {
 func main() {
 	isDev := flag.Bool("dev", false, "development mode")
 	flag.Parse()
-	webpack.Plugin = "manifest"
 	webpack.Init(*isDev)
 	view := view.HTML("./templates", ".html")
 	view = view.Layout("layout.html")

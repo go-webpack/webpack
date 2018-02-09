@@ -45,7 +45,6 @@ func viewHelpers() map[string]interface{} {
 func main() {
 	isDev := flag.Bool("dev", false, "development mode")
 	flag.Parse()
-	webpack.Plugin = "manifest"
 	webpack.Init(*isDev)
 
 	mux := http.NewServeMux()

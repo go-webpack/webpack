@@ -11,17 +11,21 @@ This module is compatible with both webpack 2.0 and 1.0. Example config file is 
 
 0.1 Initial version
 0.2 2017-08-09 Now reports if you didn't call webpack.Init() to set working mode properly
+0.3 2018-02-09 Refactor & cleanup code, add support for ManifestPlugin instead of outdated StatsPlugin (see new examples)
 
 #### Usage with QOR / Gin
 ##### main.go
 ```golang
 import (
   ...
-	"gopkg.in/webpack.v0"
+	"github.com/go-webpack/webpack"
 )
 func main() {
 	is_dev := flag.Bool("dev", false, "development mode")
 	flag.Parse()
+  webpack.DevHost = "localhost:3808" // default
+  webpack.Plugin = "manifest" // defaults to stats for compatability
+  // webpack.IgnoreMissing = true // ignore assets not present in manifest
 	webpack.Init(*is_dev)
   ...
 }
@@ -34,7 +38,7 @@ package controllers
 import (
 	"github.com/qor/render"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/webpack.v0"
+	"github.com/go-webpack/webpack"
 )
 
 var Render *render.Render
@@ -98,7 +102,7 @@ r.HTMLRender = render.Init()
 
 ```golang
 import (
-    "gopkg.in/webpack.v0"
+    "github.com/go-webpack/webpack"
     iris "gopkg.in/kataras/iris.v6"
     "gopkg.in/kataras/iris.v6/adaptors/httprouter"
 )
@@ -106,6 +110,7 @@ import (
 func main() {
     is_dev := flag.Bool("dev", false, "development mode")
     flag.Parse()
+    webpack.Plugin = "manifest"
     webpack.Init(*is_dev)
     view := view.HTML("./templates", ".html")
     view = view.Layout("layout.html")
@@ -134,14 +139,15 @@ func main() {
 
 #### Usage with other frameworks
 
-- Configure webpack to serve manifest.json via StatsPlugin
+- Configure webpack to serve manifest.json via ~~StatsPlugin~~ ManifestPlugin
+- Call ```webpack.Plugin = "manifest"``` to set go-webpack to use ManifestPlugin, don't call to use old StatsPlugin
 - Call ```webpack.Init()``` to set development or production mode.
 - Add webpack.AssetHelper to your template functions.
 - Call helper function with the name of your asset
 
 Use webpack.config.js (and package.json) from this repo or create your own.
 
-The only thing that must be present in your webpack config is StatsPlugin which is required to serve assets the proper way with hashes, etc.
+The only thing that must be present in your webpack config is ~~StatsPlugin~~ ManifestPlugin which is required to serve assets the proper way with hashes, etc.
 
 Your compiled assets is expected to be at public/webpack and your webpack-dev-server at http://localhost:3808
 
@@ -152,17 +158,32 @@ When run with -dev flag, webpack asset manifest is loaded from http://localhost:
 ```
 cd examples
 yarn install # or npm install
+# for development mode
 ./node_modules/.bin/webpack-dev-server --config webpack.config.js --hot --inline
+# Or for production mode
+./node_modules/.bin/webpack --config webpack.config.js --bail
 go get
 go run iris.go -dev
 go run qor.go -dev
 ```
+
+If all is working, you will see a JS alert message.
 
 #### Compiling assets for production
 
 ```
 NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.js
 ```
+Don't forget to set go-webpack to production mode (webpack.Init(false))
+
+#### Additional settings
+
+var DevHost = "localhost:3808" - webpack-dev-server host:port
+var FsPath = "public/webpack" - filesystem path to public webpack dir
+var WebPath = "webpack" - http path to public webpack dir
+var Plugin = "stats" - webpack plugin to use, can be stats or manifest
+var IgnoreMissing = true - ignore assets missing on manifest or fail on them
+var Verbose = true - print error messages to console (even if error is ignored)
 
 #### License
 

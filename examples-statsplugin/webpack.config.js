@@ -3,7 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var functions = require('postcss-functions');
-var ManifestPlugin = require('webpack-manifest-plugin');
+var StatsPlugin = require('stats-webpack-plugin');
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -49,7 +49,6 @@ var sassExtractor = () => {
   }))
 }
 
-
 var config = {
   entry: {
     // Sources are expected to live in $app_root/webpack
@@ -91,11 +90,13 @@ var config = {
 
   plugins: [
     extractSass,
-    new ManifestPlugin({
-      writeToFileEmit: true,
-      //basePath: "",
-      publicPath: production ? "/webpack/" : 'http://' + host + ':' + devServerPort + '/webpack/',
-    }),
+    new StatsPlugin('manifest.json', {
+      chunkModules: false,
+      source: false,
+      chunks: false,
+      modules: false,
+      assets: true
+    })
   ]
 };
 
