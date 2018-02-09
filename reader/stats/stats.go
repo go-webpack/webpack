@@ -25,11 +25,11 @@ func Read(isDev bool, host, fsPath, webPath string) (map[string][]string, error)
 		return map[string][]string{}, errors.Wrap(err, "go-webpack: Error reading manifest")
 	}
 
-	return ParseManifest(data, isDev, host, webPath)
+	return ParseManifest(data)
 }
 
-// Manifest Get webpack manifest according to current environment
-func ParseManifest(data []byte, isDev bool, host, webPath string) (map[string][]string, error) {
+// ParseManifest Get webpack manifest according to current environment
+func parseManifest(data []byte) (map[string][]string, error) {
 	var err error
 
 	resp := statsResponse{}
