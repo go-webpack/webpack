@@ -18,15 +18,15 @@ This module is compatible with both webpack 2.0 and 1.0. Example config file is 
 ```golang
 import (
   ...
-	"github.com/go-webpack/webpack"
+  "github.com/go-webpack/webpack"
 )
 func main() {
-	is_dev := flag.Bool("dev", false, "development mode")
-	flag.Parse()
+  is_dev := flag.Bool("dev", false, "development mode")
+  flag.Parse()
   webpack.DevHost = "localhost:3808" // default
   webpack.Plugin = "manifest" // defaults to stats for compatability
   // webpack.IgnoreMissing = true // ignore assets not present in manifest
-	webpack.Init(*is_dev)
+  webpack.Init(*is_dev)
   ...
 }
 ```
@@ -36,28 +36,28 @@ func main() {
 package controllers
 
 import (
-	"github.com/qor/render"
-	"github.com/gin-gonic/gin"
-	"github.com/go-webpack/webpack"
+  "github.com/qor/render"
+  "github.com/gin-gonic/gin"
+  "github.com/go-webpack/webpack"
 )
 
 var Render *render.Render
 
 func init() {
-	Render = render.New()
+  Render = render.New()
 }
 
 func ViewHelpers() map[string]interface{} {
-	return map[string]interface{}{"asset": webpack.AssetHelper}
+  return map[string]interface{}{"asset": webpack.AssetHelper}
 }
 
 func HomeIndex(ctx *gin.Context) {
-	Render.Funcs(ViewHelpers()).Execute(
-		"home_index",
-		gin.H{},
-		ctx.Request,
-		ctx.Writer,
-	)
+  Render.Funcs(ViewHelpers()).Execute(
+    "home_index",
+    gin.H{},
+    ctx.Request,
+    ctx.Writer,
+  )
 }
 ```
 
@@ -65,8 +65,8 @@ func HomeIndex(ctx *gin.Context) {
 
 ```golang
 import (
-	"github.com/gin-gonic/gin"
-	eztemplate "github.com/michelloworld/ez-gin-template"
+  "github.com/gin-gonic/gin"
+  eztemplate "github.com/michelloworld/ez-gin-template"
 )
 r = gin.Default()
 render := eztemplate.New()
@@ -102,22 +102,22 @@ r.HTMLRender = render.Init()
 
 ```golang
 import (
-    "github.com/go-webpack/webpack"
-    iris "gopkg.in/kataras/iris.v6"
-    "gopkg.in/kataras/iris.v6/adaptors/httprouter"
+  "github.com/go-webpack/webpack"
+  iris "gopkg.in/kataras/iris.v6"
+  "gopkg.in/kataras/iris.v6/adaptors/httprouter"
 )
 
 func main() {
-    is_dev := flag.Bool("dev", false, "development mode")
-    flag.Parse()
-    webpack.Plugin = "manifest"
-    webpack.Init(*is_dev)
-    view := view.HTML("./templates", ".html")
-    view = view.Layout("layout.html")
-    view = view.Funcs(map[string]interface{}{"asset": webpack.AssetHelper})
-    app.Adapt(view.Reload(*is_dev))
+  is_dev := flag.Bool("dev", false, "development mode")
+  flag.Parse()
+  webpack.Plugin = "manifest"
+  webpack.Init(*is_dev)
+  view := view.HTML("./templates", ".html")
+  view = view.Layout("layout.html")
+  view = view.Funcs(map[string]interface{}{"asset": webpack.AssetHelper})
+  app.Adapt(view.Reload(*is_dev))
 
-    app.Adapt(httprouter.New())
+  app.Adapt(httprouter.New())
 }
 ```
 
