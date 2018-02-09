@@ -10,11 +10,22 @@ import (
 	"github.com/go-webpack/webpack/reader"
 )
 
+// DevHost webpack-dev-server host:port
 var DevHost = "localhost:3808"
+
+// FsPath filesystem path to public webpack dir
 var FsPath = "public/webpack"
+
+// WebPath http path to public webpack dir
 var WebPath = "webpack"
+
+// Plugin webpack plugin to use, can be stats or manifest
 var Plugin = "stats"
+
+// IgnoreMissing ignore assets missing on manifest or fail on them
 var IgnoreMissing = true
+
+// Verbose error messages to console (even if error is ignored)
 var Verbose = true
 
 var isDev = false
@@ -41,6 +52,7 @@ func Init(dev bool) {
 	initDone = true
 }
 
+// AssetHelper renders asset tag with url from webpack manifest to the page
 func AssetHelper(key string) (template.HTML, error) {
 	var err error
 
@@ -66,13 +78,12 @@ func AssetHelper(key string) (template.HTML, error) {
 	if !ok {
 		message := "go-webpack: Asset file '" + key + "' not found in manifest"
 		if Verbose {
-			log.Printf("%s. Manifest contens: %+v", message, assets)
+			log.Printf("%s. Manifest contents: %+v", message, assets)
 		}
 		if IgnoreMissing {
 			return template.HTML(""), nil
-		} else {
-			return template.HTML(""), errors.New(message)
 		}
+		return template.HTML(""), errors.New(message)
 	}
 
 	buf := []string{}
