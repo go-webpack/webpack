@@ -47,7 +47,7 @@ func Init(dev bool) {
 		preloadedAssets, err = readManifest()
 	}
 	if err != nil {
-		log.Println("go-webpack: Error loading asset manifest", err)
+		log.Println(err)
 	}
 	initDone = true
 }
