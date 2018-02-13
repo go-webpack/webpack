@@ -9,7 +9,7 @@ This module is compatible with both webpack 3.0, 2.0 and 1.0. Example config fil
 
 ## Changelog
 
-#### 1.1
+#### Version 1.1
 
 - 2018-02-13 Move examples to [separate repo](https://github.com/go-webpack/examples)
 - 2018-02-09 Refactor & cleanup code, add support for ManifestPlugin instead of outdated StatsPlugin (see new examples)
