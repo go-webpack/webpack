@@ -1,7 +1,7 @@
 ## go-webpack
 
-[![GoDoc](https://godoc.org/gopkg.in/webpack.v0?status.svg)](https://godoc.org/gopkg.in/webpack.v0)
-[![Go Report Card](https://goreportcard.com/badge/gopkg.in/webpack.v0)](https://goreportcard.com/report/gopkg.in/webpack.v0)
+[![GoDoc](https://godoc.org/github.com/go-webpack/webpack?status.svg)](https://godoc.org/github.com/go-webpack/webpack)
+[![Go Report Card](https://goreportcard.com/badge/github.com/go-webpack/webpack)](https://goreportcard.com/report/github.com/go-webpack/webpack)
 
 This module allows proper integration with webpack, with support for proper assets reloading in development and asset hashes for production caching.
 
