@@ -155,6 +155,8 @@ When run with -dev flag, webpack asset manifest is loaded from http://localhost:
 
 #### Running examples
 
+Exapmles moved to separate repo [here](https://github.com/go-webpack/examples)
+
 ```
 cd examples
 yarn install # or npm install
@@ -163,8 +165,8 @@ yarn install # or npm install
 # Or for production mode
 ./node_modules/.bin/webpack --config webpack.config.js --bail
 go get
-go run iris.go -dev
-go run qor.go -dev
+go run iris/main.go -dev
+go run qor/main.go -dev
 ```
 
 If all is working, you will see a JS alert message.
