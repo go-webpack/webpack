@@ -3,7 +3,6 @@ package manifest
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -20,7 +19,7 @@ func Read(path string) (map[string][]string, error) {
 	response := make(map[string]string, 0)
 	json.Unmarshal(data, &response)
 	for key, value := range response {
-		log.Println("found asset", key, value)
+		//log.Println("found asset", key, value)
 		if !strings.Contains(value, ".map") {
 			assets[key] = []string{value}
 		}
