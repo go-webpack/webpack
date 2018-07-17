@@ -9,6 +9,10 @@ This module is compatible with both webpack 3.0, 2.0 and 1.0. Example config fil
 
 ## Changelog
 
+#### Version 1.2
+
+Don't hardcode manifest path (thx @rodumani)
+
 #### Version 1.1
 
 - 2018-02-13 Move examples to [separate repo](https://github.com/go-webpack/examples)
@@ -167,9 +171,14 @@ Exapmles moved to separate repo [here](https://github.com/go-webpack/examples)
 cd examples
 yarn install # or npm install
 # for development mode
-./node_modules/.bin/webpack-dev-server --config webpack.config.js --hot --inline
+yarn start
+# or ./node_modules/.bin/webpack-dev-server --config webpack.config.js --hot --inline
+
 # Or for production mode
-./node_modules/.bin/webpack --config webpack.config.js --bail
+yarn build
+# or ./node_modules/.bin/webpack --config webpack.config.js --bail
+
+# start backend
 go get
 go run iris/main.go -dev
 go run qor/main.go -dev

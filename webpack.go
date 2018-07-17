@@ -14,7 +14,7 @@ import (
 var DevHost = "localhost:3808"
 
 // FsPath filesystem path to public webpack dir
-var FsPath = "public/webpack"
+var FsPath = "./public/webpack"
 
 // WebPath http path to public webpack dir
 var WebPath = "webpack"

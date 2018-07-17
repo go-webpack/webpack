@@ -11,7 +11,7 @@ import (
 // Read webpack-manifest-plugin format manifest
 func Read(path string) (map[string][]string, error) {
 	assets := make(map[string][]string, 0)
-	data, err := ioutil.ReadFile("./public/webpack/manifest.json")
+	data, err := ioutil.ReadFile(path + "/manifest.json")
 	if err != nil {
 		return assets, errors.Wrap(err, "go-webpack: Error when loading manifest from file")
 	}
