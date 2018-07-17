@@ -20,7 +20,7 @@ var FsPath = "./public/webpack"
 var WebPath = "webpack"
 
 // Plugin webpack plugin to use, can be stats or manifest
-var Plugin = "stats"
+var Plugin = "deprecated-stats"
 
 // IgnoreMissing ignore assets missing on manifest or fail on them
 var IgnoreMissing = true
@@ -38,6 +38,11 @@ func readManifest() (map[string][]string, error) {
 
 // Init Set current environment and preload manifest
 func Init(dev bool) {
+	if Plugin == "deprecated-stats" {
+		Plugin = "stats"
+		log.Println("go-webpack: default plugin will be changed to manifest instead of stats-plugin")
+		log.Println("go-webpack: to continue using stats-plugin, please set webpack.Plugin = 'stats' explicitly")
+	}
 	var err error
 	isDev = dev
 	if isDev {
@@ -78,7 +83,10 @@ func AssetHelper(key string) (template.HTML, error) {
 	if !ok {
 		message := "go-webpack: Asset file '" + key + "' not found in manifest"
 		if Verbose {
-			log.Printf("%s. Manifest contents: %+v", message, assets)
+			log.Printf("%s. Manifest contents:", message)
+			for k, a := range assets {
+				log.Printf("%s: %s", k, a)
+			}
 		}
 		if IgnoreMissing {
 			return template.HTML(""), nil

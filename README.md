@@ -11,7 +11,9 @@ This module is compatible with both webpack 3.0, 2.0 and 1.0. Example config fil
 
 #### Version 1.2
 
-Don't hardcode manifest path (thx @rodumani)
+- 2018-07-17 Don't hardcode manifest path (thx @rodumani)
+- 2018-07-17 Deprecate stats plugin default, specify plugin explicitly to continue using it.
+- 2018-07-17 Pretty print manifest content
 
 #### Version 1.1
 
