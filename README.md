@@ -7,7 +7,15 @@ This module allows proper integration with webpack, with support for proper asse
 
 This module is compatible with both webpack 4.0, 3.0, 2.0 and 1.0. Example config file is for 3.0.
 
+## Examples
+
+Are [here](https://github.com/go-webpack/examples)
+
 ## Changelog
+
+#### Version 1.3.0
+
+- 2018-09-12 Add ability to use multiple webpack manifests per app
 
 #### Version 1.2
 
@@ -147,6 +155,29 @@ func main() {
 {{ yield }}
 {{ asset "vendor.js" }}
 {{ asset "application.js" }}
+```
+
+#### Using multiple webpack manifests per app
+
+Alternative usage if you need multiple webpack manifests (if you have separate js apps with separate webpack configs for separate portions of your app for example)
+
+for qor/render, other would be similar
+
+```
+	LandingRender = render.New(&render.Config{
+		ViewPaths:     []string{"app/views"},
+		DefaultLayout: "landing",
+		FuncMapMaker: func(*render.Render, *http.Request, http.ResponseWriter) template.FuncMap {
+			return template.FuncMap{
+				"asset": webpack.GetAssetHelper(webpack.BasicConfig(
+					"localhost:7420", // dev server
+					"./public/landing", // file path
+					"landing", // web path
+				)),
+				//"json":  json.Marshal,
+			}
+		},
+	})
 ```
 
 #### Usage with other frameworks
