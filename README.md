@@ -122,9 +122,11 @@ r.HTMLRender = render.Init()
 
 ```golang
 import (
+  "flag"
   "github.com/go-webpack/webpack"
   iris "gopkg.in/kataras/iris.v6"
   "gopkg.in/kataras/iris.v6/adaptors/httprouter"
+  "gopkg.in/kataras/iris.v6/adaptors/view"
 )
 
 func main() {
@@ -135,9 +137,13 @@ func main() {
   view := view.HTML("./templates", ".html")
   view = view.Layout("layout.html")
   view = view.Funcs(map[string]interface{}{"asset": webpack.AssetHelper})
+  app := iris.New()
   app.Adapt(view.Reload(*is_dev))
 
   app.Adapt(httprouter.New())
+
+  ...
+
 }
 ```
 
@@ -198,7 +204,7 @@ When run with -dev flag, webpack asset manifest is loaded from http://localhost:
 
 #### Running examples
 
-Exapmles moved to separate repo [here](https://github.com/go-webpack/examples)
+Examples moved to separate repo [here](https://github.com/go-webpack/examples)
 
 ```
 cd examples
