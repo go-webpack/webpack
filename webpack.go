@@ -104,6 +104,10 @@ func GetAssetHelper(conf *Config) (func(string) (template.HTML, error), error) {
 		}
 	}
 
+	return createAssetHelper(conf, preloadedAssets), nil
+}
+
+func createAssetHelper(conf *Config, preloadedAssets map[string][]string) func(string) (template.HTML, error) {
 	return func(key string) (template.HTML, error) {
 		var err error
 
@@ -124,13 +128,13 @@ func GetAssetHelper(conf *Config) (func(string) (template.HTML, error), error) {
 		v, ok := assets[key]
 		if !ok {
 			message := "go-webpack: Asset file '" + key + "' not found in manifest"
-			if Verbose {
+			if conf.Verbose {
 				log.Printf("%s. Manifest contents:", message)
 				for k, a := range assets {
 					log.Printf("%s: %s", k, a)
 				}
 			}
-			if IgnoreMissing {
+			if conf.IgnoreMissing {
 				return template.HTML(""), nil
 			}
 			return template.HTML(""), errors.New(message)
@@ -145,5 +149,5 @@ func GetAssetHelper(conf *Config) (func(string) (template.HTML, error), error) {
 			}
 		}
 		return template.HTML(strings.Join(buf, "\n")), nil
-	}, nil
+	}
 }
