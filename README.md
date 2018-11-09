@@ -2,6 +2,7 @@
 
 [![GoDoc](https://godoc.org/github.com/go-webpack/webpack?status.svg)](https://godoc.org/github.com/go-webpack/webpack)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-webpack/webpack)](https://goreportcard.com/report/github.com/go-webpack/webpack)
+[![Maintainability](https://api.codeclimate.com/v1/badges/93067e957c189653e7a3/maintainability)](https://codeclimate.com/github/go-webpack/webpack/maintainability)
 
 This module allows proper integration with webpack, with support for proper assets reloading in development and asset hashes for production caching.
 
