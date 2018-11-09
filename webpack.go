@@ -28,6 +28,7 @@ var IgnoreMissing = true
 // Verbose error messages to console (even if error is ignored)
 var Verbose = true
 
+// Config is an instance of go-webpack configuration to use with multiple manifest files (multiple webpack configs)
 type Config struct {
 	// DevHost webpack-dev-server host:port
 	DevHost string
@@ -45,6 +46,7 @@ type Config struct {
 	IsDev bool
 }
 
+// AssetHelper renders asset tag with url from webpack manifest to the page. This is a default assethelper, exported at package level. You can also get your own AssetHelper with webpack.GetAssetHelper
 var AssetHelper func(string) (template.HTML, error)
 
 // Init Set current environment and preload manifest
@@ -66,6 +68,7 @@ func Init(dev bool) {
 	})
 }
 
+// BasicConfig returns a config with basic options set to defaults
 func BasicConfig(host, path, webPath string) *Config {
 	return &Config{
 		DevHost:       host,
@@ -78,8 +81,6 @@ func BasicConfig(host, path, webPath string) *Config {
 	}
 }
 
-// AssetHelper renders asset tag with url from webpack manifest to the page
-
 func readManifest(conf *Config) (map[string][]string, error) {
 	if conf.Verbose {
 		log.Println("go-webpack: reading manifest. Plugin:", conf.Plugin, "dev:", conf.IsDev, "dev host:", conf.DevHost, "fs path:", conf.FsPath, "web path:", conf.WebPath)
@@ -87,6 +88,7 @@ func readManifest(conf *Config) (map[string][]string, error) {
 	return reader.Read(conf.Plugin, conf.DevHost, conf.FsPath, conf.WebPath, conf.IsDev)
 }
 
+// GetAssetHelper returns an asset helper function based on your config, for use with multiple webpack manifests
 func GetAssetHelper(conf *Config) func(string) (template.HTML, error) {
 	preloadedAssets := map[string][]string{}
 
