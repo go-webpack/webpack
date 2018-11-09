@@ -28,10 +28,6 @@ var IgnoreMissing = true
 // Verbose error messages to console (even if error is ignored)
 var Verbose = true
 
-var isDev = false
-var initDone = false
-var preloadedAssets map[string][]string
-
 type Config struct {
 	// DevHost webpack-dev-server host:port
 	DevHost string
@@ -47,23 +43,20 @@ type Config struct {
 	Verbose bool
 	// IsDev - true to use webpack-serve or webpack-dev-server, false to use filesystem and manifest.json
 	IsDev bool
-
-	initDone        bool
-	preloadedAssets map[string][]string
 }
 
 var AssetHelper func(string) (template.HTML, error)
 
 // Init Set current environment and preload manifest
-func Init(dev bool) {
+func Init(dev bool) error {
 	if Plugin == "deprecated-stats" {
 		Plugin = "stats"
 		log.Println("go-webpack: default plugin will be changed to manifest instead of stats-plugin")
 		log.Println("go-webpack: to continue using stats-plugin, please set webpack.Plugin = 'stats' explicitly")
 	}
-	isDev = dev
 
-	AssetHelper = GetAssetHelper(&Config{
+	var err error
+	AssetHelper, err = GetAssetHelper(&Config{
 		DevHost:       DevHost,
 		FsPath:        FsPath,
 		WebPath:       WebPath,
@@ -72,6 +65,7 @@ func Init(dev bool) {
 		Verbose:       Verbose,
 		IsDev:         dev,
 	})
+	return err
 }
 
 func BasicConfig(host, path, webPath string) *Config {
@@ -82,7 +76,7 @@ func BasicConfig(host, path, webPath string) *Config {
 		Plugin:        "manifest",
 		IgnoreMissing: true,
 		Verbose:       true,
-		IsDev:         isDev,
+		IsDev:         false,
 	}
 }
 
@@ -92,28 +86,33 @@ func readManifest(conf *Config) (map[string][]string, error) {
 	return reader.Read(conf.Plugin, conf.DevHost, conf.FsPath, conf.WebPath, conf.IsDev)
 }
 
-func GetAssetHelper(conf *Config) func(string) (template.HTML, error) {
+func GetAssetHelper(conf *Config) (func(string) (template.HTML, error), error) {
+	preloadedAssets := map[string][]string{}
+
 	var err error
 	if conf.IsDev {
 		// Try to preload manifest, so we can show an error if webpack-dev-server is not running
 		_, err = readManifest(conf)
+		if err != nil {
+			log.Println(err)
+		}
 	} else {
-		conf.preloadedAssets, err = readManifest(conf)
+		preloadedAssets, err = readManifest(conf)
+		// we won't ever re-check assets in this case.  this should be a hard error.
+		if err != nil {
+			return nil, err
+		}
 	}
-	if err != nil {
-		log.Println(err)
-	}
-	initDone = true
 
+	return createAssetHelper(conf, preloadedAssets), nil
+}
+
+func createAssetHelper(conf *Config, preloadedAssets map[string][]string) func(string) (template.HTML, error) {
 	return func(key string) (template.HTML, error) {
 		var err error
 
-		if !initDone {
-			return "", errors.New("Please call webpack.Init() first (see readme)")
-		}
-
 		var assets map[string][]string
-		if isDev {
+		if conf.IsDev {
 			assets, err = readManifest(conf)
 			if err != nil {
 				return template.HTML(""), err
@@ -129,13 +128,13 @@ func GetAssetHelper(conf *Config) func(string) (template.HTML, error) {
 		v, ok := assets[key]
 		if !ok {
 			message := "go-webpack: Asset file '" + key + "' not found in manifest"
-			if Verbose {
+			if conf.Verbose {
 				log.Printf("%s. Manifest contents:", message)
 				for k, a := range assets {
 					log.Printf("%s: %s", k, a)
 				}
 			}
-			if IgnoreMissing {
+			if conf.IgnoreMissing {
 				return template.HTML(""), nil
 			}
 			return template.HTML(""), errors.New(message)
