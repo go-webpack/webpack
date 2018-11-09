@@ -19,6 +19,12 @@ Are [here](https://github.com/go-webpack/examples)
 
 ## Changelog
 
+#### Version 1.4.0
+
+- 2018-11-10 Fix globals usage and add some tests #4 thx @toshok
+- 2018-11-10 tweak iris example #3 thx @vosmith
+- assorted refactoring
+
 #### Version 1.3.0
 
 - 2018-09-12 Add ability to use multiple webpack manifests per app
