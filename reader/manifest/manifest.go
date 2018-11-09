@@ -3,7 +3,6 @@ package manifest
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -11,7 +10,7 @@ import (
 
 // Read webpack-manifest-plugin format manifest
 func Read(path string) (map[string][]string, error) {
-	log.Println("read:", path+"/manifest.json")
+	//log.Println("read:", path+"/manifest.json")
 	data, err := ioutil.ReadFile(path + "/manifest.json")
 	if err != nil {
 		return nil, errors.Wrap(err, "go-webpack: Error when loading manifest from file")

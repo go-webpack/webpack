@@ -82,9 +82,9 @@ func BasicConfig(host, path, webPath string) *Config {
 }
 
 func readManifest(conf *Config) (map[string][]string, error) {
-	if conf.Verbose {
-		log.Println("go-webpack: reading manifest. Plugin:", conf.Plugin, "dev:", conf.IsDev, "dev host:", conf.DevHost, "fs path:", conf.FsPath, "web path:", conf.WebPath)
-	}
+	//if conf.Verbose {
+	//log.Println("go-webpack: reading manifest. Plugin:", conf.Plugin, "dev:", conf.IsDev, "dev host:", conf.DevHost, "fs path:", conf.FsPath, "web path:", conf.WebPath)
+	//}
 	return reader.Read(conf.Plugin, conf.DevHost, conf.FsPath, conf.WebPath, conf.IsDev)
 }
 
