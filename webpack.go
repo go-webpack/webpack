@@ -6,6 +6,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/go-webpack/webpack/helper"
 	"github.com/go-webpack/webpack/reader"
 )
@@ -48,15 +49,14 @@ type Config struct {
 var AssetHelper func(string) (template.HTML, error)
 
 // Init Set current environment and preload manifest
-func Init(dev bool) error {
+func Init(dev bool) {
 	if Plugin == "deprecated-stats" {
 		Plugin = "stats"
 		log.Println("go-webpack: default plugin will be changed to manifest instead of stats-plugin")
 		log.Println("go-webpack: to continue using stats-plugin, please set webpack.Plugin = 'stats' explicitly")
 	}
 
-	var err error
-	AssetHelper, err = GetAssetHelper(&Config{
+	AssetHelper = GetAssetHelper(&Config{
 		DevHost:       DevHost,
 		FsPath:        FsPath,
 		WebPath:       WebPath,
@@ -65,7 +65,6 @@ func Init(dev bool) error {
 		Verbose:       Verbose,
 		IsDev:         dev,
 	})
-	return err
 }
 
 func BasicConfig(host, path, webPath string) *Config {
@@ -83,10 +82,13 @@ func BasicConfig(host, path, webPath string) *Config {
 // AssetHelper renders asset tag with url from webpack manifest to the page
 
 func readManifest(conf *Config) (map[string][]string, error) {
+	if conf.Verbose {
+		log.Println("go-webpack: reading manifest. Plugin:", conf.Plugin, "dev:", conf.IsDev, "dev host:", conf.DevHost, "fs path:", conf.FsPath, "web path:", conf.WebPath)
+	}
 	return reader.Read(conf.Plugin, conf.DevHost, conf.FsPath, conf.WebPath, conf.IsDev)
 }
 
-func GetAssetHelper(conf *Config) (func(string) (template.HTML, error), error) {
+func GetAssetHelper(conf *Config) func(string) (template.HTML, error) {
 	preloadedAssets := map[string][]string{}
 
 	var err error
@@ -94,17 +96,19 @@ func GetAssetHelper(conf *Config) (func(string) (template.HTML, error), error) {
 		// Try to preload manifest, so we can show an error if webpack-dev-server is not running
 		_, err = readManifest(conf)
 		if err != nil {
-			log.Println(err)
+			log.Println("go-webpack: error:", err)
+			return nil
 		}
 	} else {
 		preloadedAssets, err = readManifest(conf)
 		// we won't ever re-check assets in this case.  this should be a hard error.
 		if err != nil {
-			return nil, err
+			log.Println("go-webpack: error:", err)
+			return nil
 		}
 	}
 
-	return createAssetHelper(conf, preloadedAssets), nil
+	return createAssetHelper(conf, preloadedAssets)
 }
 
 func createAssetHelper(conf *Config, preloadedAssets map[string][]string) func(string) (template.HTML, error) {
@@ -124,7 +128,7 @@ func createAssetHelper(conf *Config, preloadedAssets map[string][]string) func(s
 		parts := strings.Split(key, ".")
 		kind := parts[len(parts)-1]
 		//log.Println("showing assets:", key, parts, kind)
-
+		spew.Dump(assets)
 		v, ok := assets[key]
 		if !ok {
 			message := "go-webpack: Asset file '" + key + "' not found in manifest"
