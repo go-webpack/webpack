@@ -6,7 +6,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/pkg/errors"
 )
 
@@ -35,6 +34,5 @@ func unmarshalManifest(data []byte) (map[string][]string, error) {
 			assets[key] = []string{value}
 		}
 	}
-	spew.Dump(assets)
 	return assets, nil
 }

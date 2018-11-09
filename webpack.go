@@ -6,7 +6,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/go-webpack/webpack/helper"
 	"github.com/go-webpack/webpack/reader"
 )
@@ -128,7 +127,6 @@ func createAssetHelper(conf *Config, preloadedAssets map[string][]string) func(s
 		parts := strings.Split(key, ".")
 		kind := parts[len(parts)-1]
 		//log.Println("showing assets:", key, parts, kind)
-		spew.Dump(assets)
 		v, ok := assets[key]
 		if !ok {
 			message := "go-webpack: Asset file '" + key + "' not found in manifest"
