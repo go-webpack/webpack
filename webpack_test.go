@@ -6,7 +6,7 @@ import (
 
 func TestManifestAssetHelper(t *testing.T) {
 	assets := map[string][]string{
-		"main.js": []string{"main.1.js", "main.2.js"},
+		"main.js": {"main.1.js", "main.2.js"},
 	}
 
 	helper := createAssetHelper(&Config{
