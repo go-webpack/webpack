@@ -19,6 +19,9 @@ Are [here](https://github.com/go-webpack/examples)
 
 ## Changelog
 
+#### Version 1.4.1
+- less noisy (remove some logs on verbose)
+
 #### Version 1.4.0
 
 - 2018-11-10 Fix globals usage and add some tests #4 thx @toshok
