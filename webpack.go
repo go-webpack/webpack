@@ -88,6 +88,7 @@ func readManifest(conf *Config) (map[string][]string, error) {
 	return reader.Read(conf.Plugin, conf.DevHost, conf.FsPath, conf.WebPath, conf.IsDev)
 }
 
+// ErrorFunction returns a template function that returns a fixed error message
 func ErrorFunction(err error) func(string) (template.HTML, error) {
 	log.Println("go-webpack: error:", err)
 	return func(string) (template.HTML, error) {
