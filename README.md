@@ -19,6 +19,9 @@ Are [here](https://github.com/go-webpack/examples)
 
 ## Changelog
 
+#### Unreleased
+- Various refactoring
+
 #### Version 1.4.2
 - Don't fail if manifest is not present in development mode
 

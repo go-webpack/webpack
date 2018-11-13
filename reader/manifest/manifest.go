@@ -8,8 +8,11 @@ import (
 	"github.com/pkg/errors"
 )
 
+type assetList map[string][]string
+type assetResponse map[string]string
+
 // Read webpack-manifest-plugin format manifest
-func Read(path string) (map[string][]string, error) {
+func Read(path string) (assetList, error) {
 	//log.Println("read:", path+"/manifest.json")
 	data, err := ioutil.ReadFile(path + "/manifest.json")
 	if err != nil {
@@ -19,14 +22,14 @@ func Read(path string) (map[string][]string, error) {
 	return unmarshalManifest(data)
 }
 
-func unmarshalManifest(data []byte) (map[string][]string, error) {
-	response := make(map[string]string, 0)
+func unmarshalManifest(data []byte) (assetList, error) {
+	response := make(assetResponse, 0)
 	err := json.Unmarshal(data, &response)
 	if err != nil {
 		return nil, errors.Wrap(err, "go-webpack: Error unmarshaling manifest file")
 	}
 
-	assets := make(map[string][]string, len(response))
+	assets := make(assetList, len(response))
 	for key, value := range response {
 		//log.Println("found asset", key, value)
 		if !strings.HasSuffix(value, ".map") {
