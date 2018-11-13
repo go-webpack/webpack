@@ -19,6 +19,9 @@ Are [here](https://github.com/go-webpack/examples)
 
 ## Changelog
 
+#### Version 1.4.2
+- Don't fail if manifest is not present in development mode
+
 #### Version 1.4.1
 - less noisy (remove some logs on verbose)
 

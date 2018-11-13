@@ -88,6 +88,13 @@ func readManifest(conf *Config) (map[string][]string, error) {
 	return reader.Read(conf.Plugin, conf.DevHost, conf.FsPath, conf.WebPath, conf.IsDev)
 }
 
+func ErrorFunction(err error) func(string) (template.HTML, error) {
+	log.Println("go-webpack: error:", err)
+	return func(string) (template.HTML, error) {
+		return template.HTML(""), err
+	}
+}
+
 // GetAssetHelper returns an asset helper function based on your config, for use with multiple webpack manifests
 func GetAssetHelper(conf *Config) func(string) (template.HTML, error) {
 	preloadedAssets := map[string][]string{}
@@ -97,15 +104,16 @@ func GetAssetHelper(conf *Config) func(string) (template.HTML, error) {
 		// Try to preload manifest, so we can show an error if webpack-dev-server is not running
 		_, err = readManifest(conf)
 		if err != nil {
-			log.Println("go-webpack: error:", err)
-			return nil
+			log.Println(err)
 		}
+		//if err != nil {
+		//return ErrorFunction(err)
+		//}
 	} else {
 		preloadedAssets, err = readManifest(conf)
 		// we won't ever re-check assets in this case.  this should be a hard error.
 		if err != nil {
-			log.Println("go-webpack: error:", err)
-			return nil
+			return ErrorFunction(err)
 		}
 	}
 
