@@ -10,7 +10,7 @@ This module allows proper integration with webpack, with support for proper asse
 This module is compatible with webpack 1.0 to 4.0
 
 For webpack 4 use this example config file:
-https://github.com/go-webpack/examples/blob/master/webpack4.config.js
+https://github.com/go-webpack/examples/blob/master/config/webpack.config.js
 (the only thing required for go-webpack is ManifestPlugin - the rest is my personal example config)
 
 ## Examples
