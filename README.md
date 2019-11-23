@@ -20,7 +20,12 @@ Are [here](https://github.com/go-webpack/examples)
 ## Changelog
 
 #### Unreleased
+
+#### Version 2.0.0
+- Switch to go 1.11 modules
 - Various refactoring
+- Change default to stats plugin, to use StatsPlugin set it manually ```webpack.Plugin = "stats"```
+- Update examples, add pongo2, gin and gin-render examples
 
 #### Version 1.4.2
 - Don't fail if manifest is not present in development mode
